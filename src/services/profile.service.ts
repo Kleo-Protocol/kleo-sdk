@@ -4,7 +4,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
  * Get user profile from Supabase
  */
 export async function getProfile(supabase: SupabaseClient, userAddress: string): Promise<any[]> {
-  const { data, error } = await supabase.from('users').select().eq('id', userAddress);
+  const { data, error } = await supabase.from('users').select().eq('address', userAddress);
 
   if (error) {
     throw new Error(`Error fetching profile: ${error.message}`);

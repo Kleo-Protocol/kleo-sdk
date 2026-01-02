@@ -2,9 +2,10 @@ import { DedotClient, WsProvider } from 'dedot';
 import { toEvmAddress } from 'dedot/contracts';
 import type { PolkadotApi } from '@dedot/chaintypes';
 
-export async function createDedotClient(endpoint: string = 'wss://polkadot-asset-hub-rpc.polkadot.io') {
+export async function createDedotClient(endpoint: string = 'wss://asset-hub-paseo.dotters.network') {
   const provider = new WsProvider(endpoint);
   const client = await DedotClient.new<PolkadotApi>(provider);
+  console.log("Connected to Dedot client at", endpoint);
   return client;
 }
 

@@ -36,19 +36,14 @@ export async function getLenderExposure(
 
   const reputationAddress = contracts.reputation;
 
-  // 3. Initialize reputation contract
-  if (!reputationMetadata) {
-    throw new Error('Reputation metadata not provided. Pass it to the KleoClient constructor.');
-  }
-
   const reputationContract = new Contract<ReputationContractApi>(
     dedotClient as any,
     reputationMetadata,
     reputationAddress
   );
 
-  // 4. Read user reputation from storage using lazy mapping
-  const storage = await reputationContract.storage.lazy();
+  // Read user reputation from storage using lazy mapping
+  const storage = reputationContract.storage.lazy();
   const userRep = await storage.userReps.get(userAddress);
 
   return userRep;
@@ -84,10 +79,6 @@ export async function getBorrowerInfo(
     throw new Error(`Required contract addresses not found in pool contracts`);
   }
 
-  if (!metadata.reputation || !metadata.vouch || !metadata.config) {
-    throw new Error('Required metadata not provided. Pass all metadata to the KleoClient constructor.');
-  }
-
   // Initialize contracts
   const reputationContract = new Contract<ReputationContractApi>(
     dedotClient as any,
@@ -107,16 +98,15 @@ export async function getBorrowerInfo(
     contracts.config
   );
 
-  // Fetch data in parallel
-  const [reputationStorage, vouchStorage, minStarsResult] = await Promise.all([
-    reputationContract.storage.lazy(),
-    vouchContract.storage.lazy(),
-    configContract.query.getMinStarsToVouch(),
-  ]);
+  // Get lazy storage accessors
+  const reputationStorage = reputationContract.storage.lazy();
+  const vouchStorage = vouchContract.storage.lazy();
 
-  const [userRep, borrowerExposure] = await Promise.all([
+  // Fetch data in parallel
+  const [userRep, borrowerExposure, minStarsResult] = await Promise.all([
     reputationStorage.userReps.get(userAddress),
     vouchStorage.borrowerExposure.get(userAddress),
+    configContract.query.getMinStarsToVouch(),
   ]);
 
   if (!userRep) {
@@ -164,17 +154,13 @@ export async function getUserLoans(
     throw new Error(`Reputation contract address not found in pool contracts`);
   }
 
-  if (!reputationMetadata) {
-    throw new Error('Reputation metadata not provided. Pass it to the KleoClient constructor.');
-  }
-
   const reputationContract = new Contract<ReputationContractApi>(
     dedotClient as any,
     reputationMetadata,
     contracts.reputation
   );
 
-  const storage = await reputationContract.storage.lazy();
+  const storage = reputationContract.storage.lazy();
   const userRep = await storage.userReps.get(userAddress);
 
   if (!userRep) {

@@ -39,20 +39,14 @@ export async function getUserDeposit(
 
   const lendingPoolAddress = contracts.lending_pool;
 
-  // 3. Initialize lending pool contract
-  if (!lendingPoolMetadata) {
-    throw new Error('LendingPool metadata not provided. Pass it to the KleoClient constructor.');
-  }
-
   const lendingPoolContract = new Contract<LendingPoolContractApi>(
     dedotClient as any,
     lendingPoolMetadata,
     lendingPoolAddress
   );
 
-  // 4. Read user deposit from storage using lazy mapping
-  const storage = await lendingPoolContract.storage.lazy();
-  const deposit = await storage.userDeposits.get(userAddress);
+  // 4. Read user deposit using contract query
+  const result = await lendingPoolContract.query.getUserDeposit(userAddress);
 
-  return deposit?.toString();
+  return result.data?.toString();
 }

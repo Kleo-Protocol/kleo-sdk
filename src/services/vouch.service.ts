@@ -35,19 +35,14 @@ export async function getVouchRelationship(
 
   const vouchAddress = contracts.vouch;
 
-  // 3. Initialize vouch contract
-  if (!vouchMetadata) {
-    throw new Error('Vouch metadata not provided. Pass it to the KleoClient constructor.');
-  }
-
   const vouchContract = new Contract<VouchContractApi>(
     dedotClient as any,
     vouchMetadata,
     vouchAddress
   );
 
-  // 4. Read specific relationship from storage
-  const storage = await vouchContract.storage.lazy();
+  // Read specific relationship from storage
+  const storage = vouchContract.storage.lazy();
   const relationship = await storage.relationships.get([voucherAddress, borrowerAddress]);
 
   if (!relationship) {
@@ -89,17 +84,13 @@ export async function getBorrowerVouches(
     throw new Error(`Vouch contract address not found in pool contracts`);
   }
 
-  if (!vouchMetadata) {
-    throw new Error('Vouch metadata not provided. Pass it to the KleoClient constructor.');
-  }
-
   const vouchContract = new Contract<VouchContractApi>(
     dedotClient as any,
     vouchMetadata,
     contracts.vouch
   );
 
-  const storage = await vouchContract.storage.lazy();
+  const storage = vouchContract.storage.lazy();
 
   // Get list of vouchers for this borrower
   const vouchers = await storage.borrowerVouchers.get(borrowerAddress);

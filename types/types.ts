@@ -4,7 +4,7 @@
 export interface KleoConfig {
   /**
    * WebSocket endpoint for the blockchain connection
-   * @default "wss://polkadot-asset-hub-rpc.polkadot.io"
+   * @default "wss://asset-hub-paseo.dotters.network"
    */
   endpoint?: string;
   
@@ -13,6 +13,18 @@ export interface KleoConfig {
    * @default 30000
    */
   timeout?: number;
+
+  /**
+   * Supabase project URL
+   * @default process.env.SUPABASE_URL
+   */
+  supabaseUrl?: string;
+
+  /**
+   * Supabase anonymous key
+   * @default process.env.SUPABASE_ANON_KEY
+   */
+  supabaseAnonKey?: string;
 }
 
 /**

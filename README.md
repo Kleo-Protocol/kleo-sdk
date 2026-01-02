@@ -1,10 +1,10 @@
 # Kleo SDK
 
-A TypeScript SDK for interacting with the Kleo Protocol on Polkadot Asset Hub. This SDK provides a unified interface for managing lending pools, reputation systems, and vouch relationships.
+A TypeScript SDK for interacting with the Kleo Protocol on Polkadot Paseo Asset Hub. This SDK provides a unified interface for managing lending pools, reputation systems, and vouch relationships.
 
 ## Features
 
--  **Blockchain Integration** - Connect to Polkadot Asset Hub via WebSocket
+-  **Blockchain Integration** - Connect to Polkadot Paseo Asset Hub via WebSocket
 -  **Lending Pool Management** - Query pool states and user deposits
 -  **Reputation System** - Track lender exposure and borrower reputation
 -  **Vouch System** - Manage vouch relationships between users
@@ -31,7 +31,7 @@ import vouchMetadata from './metadata/vouch.json';
 // Initialize the client
 const client = new KleoClient(
   {
-    endpoint: 'wss://polkadot-asset-hub-rpc.polkadot.io', // Optional, this is the default
+    endpoint: 'wss://asset-hub-paseo.dotters.network', // Optional, this is the default
     timeout: 30000, // Optional, default is 30000ms
   },
   {
@@ -69,7 +69,7 @@ async function main() {
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `endpoint` | `string` | `wss://polkadot-asset-hub-rpc.polkadot.io` | WebSocket endpoint for blockchain connection |
+| `endpoint` | `string` | `wss://asset-hub-paseo.dotters.network` | WebSocket endpoint for blockchain connection |
 | `timeout` | `number` | `30000` | Request timeout in milliseconds |
 
 ## API Reference

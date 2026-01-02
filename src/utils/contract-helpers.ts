@@ -7,20 +7,6 @@ import { ReputationContractApi } from '../../types/reputation/index.js';
 import { VouchContractApi } from '../../types/vouch/index.js';
 
 /**
- * Contract metadata types
- */
-export interface ContractMetadata {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  config?: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  lendingPool?: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  reputation?: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  vouch?: any;
-}
-
-/**
  * Pool contracts addresses structure
  */
 export interface PoolContracts {
