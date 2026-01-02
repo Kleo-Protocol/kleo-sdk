@@ -41,8 +41,8 @@ export async function getVouchRelationship(
     vouchAddress
   );
 
-  // 4. Read specific relationship from storage
-  const storage = await vouchContract.storage.lazy();
+  // Read specific relationship from storage
+  const storage = vouchContract.storage.lazy();
   const relationship = await storage.relationships.get([voucherAddress, borrowerAddress]);
 
   if (!relationship) {
@@ -90,7 +90,7 @@ export async function getBorrowerVouches(
     contracts.vouch
   );
 
-  const storage = await vouchContract.storage.lazy();
+  const storage = vouchContract.storage.lazy();
 
   // Get list of vouchers for this borrower
   const vouchers = await storage.borrowerVouchers.get(borrowerAddress);

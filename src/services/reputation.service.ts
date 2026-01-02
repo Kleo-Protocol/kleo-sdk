@@ -42,8 +42,8 @@ export async function getLenderExposure(
     reputationAddress
   );
 
-  // 4. Read user reputation from storage using lazy mapping
-  const storage = await reputationContract.storage.lazy();
+  // Read user reputation from storage using lazy mapping
+  const storage = reputationContract.storage.lazy();
   const userRep = await storage.userReps.get(userAddress);
 
   return userRep;
@@ -98,16 +98,15 @@ export async function getBorrowerInfo(
     contracts.config
   );
 
-  // Fetch data in parallel
-  const [reputationStorage, vouchStorage, minStarsResult] = await Promise.all([
-    reputationContract.storage.lazy(),
-    vouchContract.storage.lazy(),
-    configContract.query.getMinStarsToVouch(),
-  ]);
+  // Get lazy storage accessors
+  const reputationStorage = reputationContract.storage.lazy();
+  const vouchStorage = vouchContract.storage.lazy();
 
-  const [userRep, borrowerExposure] = await Promise.all([
+  // Fetch data in parallel
+  const [userRep, borrowerExposure, minStarsResult] = await Promise.all([
     reputationStorage.userReps.get(userAddress),
     vouchStorage.borrowerExposure.get(userAddress),
+    configContract.query.getMinStarsToVouch(),
   ]);
 
   if (!userRep) {
@@ -161,7 +160,7 @@ export async function getUserLoans(
     contracts.reputation
   );
 
-  const storage = await reputationContract.storage.lazy();
+  const storage = reputationContract.storage.lazy();
   const userRep = await storage.userReps.get(userAddress);
 
   if (!userRep) {
