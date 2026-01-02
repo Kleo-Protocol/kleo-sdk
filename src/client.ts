@@ -35,7 +35,7 @@ export class KleoClient {
    */
   constructor(config: KleoConfig = {}) {
     this.config = {
-      endpoint: config.endpoint || 'wss://polkadot-asset-hub-rpc.polkadot.io',
+      endpoint: config.endpoint || 'wss://asset-hub-paseo.dotters.network',
       timeout: config.timeout || 30000,
     };
     this.supabaseClient = createSupabaseClient(

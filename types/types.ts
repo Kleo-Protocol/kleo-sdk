@@ -4,7 +4,7 @@
 export interface KleoConfig {
   /**
    * WebSocket endpoint for the blockchain connection
-   * @default "wss://polkadot-asset-hub-rpc.polkadot.io"
+   * @default "wss://asset-hub-paseo.dotters.network"
    */
   endpoint?: string;
   
