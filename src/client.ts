@@ -92,4 +92,38 @@ export class KleoClient {
 
     return data || [];
   }
+
+  async getProfile(userAddress: string): Promise<any[]> {
+    const { data, error } = await supabase
+      .from('users')
+      .select()
+      .eq('id', userAddress);
+
+    if (error) {
+      throw new Error(`Error fetching profile: ${error.message}`);
+    }
+
+    return data || [];
+  }
+
+  async insertProfile(userAddress: string, name: string): Promise<void> {
+    const { error } = await supabase
+    .from('users')
+    .insert({ address: userAddress, name: name })
+
+    if (error) {
+      throw new Error(`Error fetching profile: ${error.message}`);
+    }
+  }
+
+  async updateProfile(userAddress: string, name: string): Promise<void> {
+    const { error } = await supabase
+    .from('users')
+    .update({ name: name })
+    .eq('address', userAddress)
+
+    if (error) {
+      throw new Error(`Error fetching profile: ${error.message}`);
+    }
+  }
 }
