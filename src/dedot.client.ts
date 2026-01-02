@@ -5,6 +5,7 @@ import type { PolkadotApi } from '@dedot/chaintypes';
 export async function createDedotClient(endpoint: string = 'wss://polkadot-asset-hub-rpc.polkadot.io') {
   const provider = new WsProvider(endpoint);
   const client = await DedotClient.new<PolkadotApi>(provider);
+  console.log("Connected to Dedot client at", endpoint);
   return client;
 }
 

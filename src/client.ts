@@ -3,7 +3,7 @@ import type { PolkadotApi } from '@dedot/chaintypes';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { KleoConfig } from '../types/types';
 import { createDedotClient, ensureAccountMapped } from './dedot.client';
-import supabase from './supabase.client';
+import { createSupabaseClient } from './supabase.client';
 import { ReputationUserReputation } from '../types/reputation/index.js';
 import { ContractMetadata } from './utils/contract-helpers';
 import { BackedPosition, VouchInfo, BorrowerInfo, Loan } from './interfaces';
@@ -26,13 +26,13 @@ export { PoolState } from './services/pool.service';
  */
 export class KleoClient {
   private dedotClient: DedotClient<PolkadotApi> | null = null;
-  private supabaseClient: typeof supabase = supabase;
+  private supabaseClient: SupabaseClient;
   private config: { endpoint: string; timeout: number };
   private metadata: ContractMetadata;
 
   /**
    * Initialize a new Kleo SDK client
-   * @param config - Configuration options
+   * @param config - Configuration options (credentials default to environment variables)
    * @param metadata - Contract metadata objects
    */
   constructor(config: KleoConfig = {}, metadata?: ContractMetadata) {
@@ -46,8 +46,11 @@ export class KleoClient {
       reputation: metadata?.reputation,
       vouch: metadata?.vouch,
     };
+    this.supabaseClient = createSupabaseClient(
+      config.supabaseUrl,
+      config.supabaseAnonKey
+    );
     this.connect();
-    this.supabaseClient = supabase;
   }
 
   /**

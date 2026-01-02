@@ -13,6 +13,18 @@ export interface KleoConfig {
    * @default 30000
    */
   timeout?: number;
+
+  /**
+   * Supabase project URL
+   * @default process.env.SUPABASE_URL
+   */
+  supabaseUrl?: string;
+
+  /**
+   * Supabase anonymous key
+   * @default process.env.SUPABASE_ANON_KEY
+   */
+  supabaseAnonKey?: string;
 }
 
 /**
