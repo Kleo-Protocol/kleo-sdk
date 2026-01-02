@@ -2,12 +2,15 @@ import { DedotClient } from 'dedot';
 import type { PolkadotApi } from '@dedot/chaintypes';
 import { KleoConfig } from '../types/types';
 import { createDedotClient, ensureAccountMapped } from './dedot.client';
+import supabase from './supabase.client';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 /**
  * Main Kleo SDK Client
  */
 export class KleoClient {
   private dedotClient: DedotClient<PolkadotApi> | null = null;
+  private supabaseClient: typeof supabase = supabase;
   private config: { endpoint: string; timeout: number };
 
   /**
@@ -19,6 +22,8 @@ export class KleoClient {
       endpoint: config.endpoint || 'wss://polkadot-asset-hub-rpc.polkadot.io',
       timeout: config.timeout || 30000,
     };
+    this.connect();
+    this.supabaseClient = supabase;
   }
 
   /**
@@ -34,8 +39,15 @@ export class KleoClient {
   /**
    * Get the underlying Dedot client
    */
-  getClient(): DedotClient<PolkadotApi> | null {
+  getDedotClient(): DedotClient<PolkadotApi> | null {
     return this.dedotClient;
+  }
+
+  /**
+   * Get the underlying Supabase client
+   */
+  getSupabaseClient(): SupabaseClient | null {
+    return this.supabaseClient;
   }
 
   /**
@@ -54,5 +66,30 @@ export class KleoClient {
       await this.dedotClient.disconnect();
       this.dedotClient = null;
     }
+  }
+
+  async getPools(): Promise<any[]> {
+    const { data, error } = await supabase
+      .from('pools')
+      .select();
+
+    if (error) {
+      throw new Error(`Error fetching pools: ${error.message}`);
+    }
+
+    return data || [];
+  }
+
+  async getPool(poolId: string): Promise<any[]> {
+    const { data, error } = await supabase
+      .from('pools')
+      .select()
+      .eq('id', poolId);
+
+    if (error) {
+      throw new Error(`Error fetching pools: ${error.message}`);
+    }
+
+    return data || [];
   }
 }
