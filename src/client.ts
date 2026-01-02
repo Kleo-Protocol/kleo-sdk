@@ -5,8 +5,8 @@ import { KleoConfig } from '../types/types';
 import { createDedotClient, ensureAccountMapped } from './dedot.client';
 import { createSupabaseClient } from './supabase.client';
 import { ReputationUserReputation } from '../types/reputation/index.js';
-import { ContractMetadata } from './utils/contract-helpers';
 import { BackedPosition, VouchInfo, BorrowerInfo, Loan } from './interfaces';
+import { metadata } from './metadata';
 
 // Re-export interfaces
 export { BackedPosition, VouchInfo, BorrowerInfo, Loan } from './interfaces';
@@ -28,23 +28,15 @@ export class KleoClient {
   private dedotClient: DedotClient<PolkadotApi> | null = null;
   private supabaseClient: SupabaseClient;
   private config: { endpoint: string; timeout: number };
-  private metadata: ContractMetadata;
 
   /**
    * Initialize a new Kleo SDK client
    * @param config - Configuration options (credentials default to environment variables)
-   * @param metadata - Contract metadata objects
    */
-  constructor(config: KleoConfig = {}, metadata?: ContractMetadata) {
+  constructor(config: KleoConfig = {}) {
     this.config = {
       endpoint: config.endpoint || 'wss://polkadot-asset-hub-rpc.polkadot.io',
       timeout: config.timeout || 30000,
-    };
-    this.metadata = {
-      config: metadata?.config,
-      lendingPool: metadata?.lendingPool,
-      reputation: metadata?.reputation,
-      vouch: metadata?.vouch,
     };
     this.supabaseClient = createSupabaseClient(
       config.supabaseUrl,
@@ -109,14 +101,11 @@ export class KleoClient {
     poolId: string,
     defaultCaller?: string
   ): Promise<PoolService.PoolState> {
-    if (!this.metadata.config) {
-      throw new Error('Config metadata not provided. Pass it to the KleoClient constructor.');
-    }
     const client = await this.connect();
     return PoolService.getPoolState(
       this.supabaseClient,
       client,
-      this.metadata.config,
+      metadata.config,
       poolId,
       defaultCaller
     );
@@ -139,14 +128,11 @@ export class KleoClient {
   // ============ Lending Methods ============
 
   async getUserDeposit(poolId: string, userAddress: string): Promise<string | undefined> {
-    if (!this.metadata.lendingPool) {
-      throw new Error('LendingPool metadata not provided. Pass it to the KleoClient constructor.');
-    }
     const client = await this.connect();
     return LendingService.getUserDeposit(
       this.supabaseClient,
       client,
-      this.metadata.lendingPool,
+      metadata.lendingPool,
       poolId,
       userAddress
     );
@@ -158,14 +144,11 @@ export class KleoClient {
     poolId: string,
     userAddress: string
   ): Promise<ReputationUserReputation | undefined> {
-    if (!this.metadata.reputation) {
-      throw new Error('Reputation metadata not provided. Pass it to the KleoClient constructor.');
-    }
     const client = await this.connect();
     return ReputationService.getLenderExposure(
       this.supabaseClient,
       client,
-      this.metadata.reputation,
+      metadata.reputation,
       poolId,
       userAddress
     );
@@ -175,17 +158,14 @@ export class KleoClient {
     poolId: string,
     userAddress: string
   ): Promise<BorrowerInfo | undefined> {
-    if (!this.metadata.reputation || !this.metadata.vouch || !this.metadata.config) {
-      throw new Error('Required metadata not provided. Pass all metadata to the KleoClient constructor.');
-    }
     const client = await this.connect();
     return ReputationService.getBorrowerInfo(
       this.supabaseClient,
       client,
       {
-        config: this.metadata.config,
-        reputation: this.metadata.reputation,
-        vouch: this.metadata.vouch,
+        config: metadata.config,
+        reputation: metadata.reputation,
+        vouch: metadata.vouch,
       },
       poolId,
       userAddress
@@ -193,14 +173,11 @@ export class KleoClient {
   }
 
   async getUserLoans(poolId: string, userAddress: string): Promise<Loan[]> {
-    if (!this.metadata.reputation) {
-      throw new Error('Reputation metadata not provided. Pass it to the KleoClient constructor.');
-    }
     const client = await this.connect();
     return ReputationService.getUserLoans(
       this.supabaseClient,
       client,
-      this.metadata.reputation,
+      metadata.reputation,
       poolId,
       userAddress
     );
@@ -213,14 +190,11 @@ export class KleoClient {
     voucherAddress: string,
     borrowerAddress: string
   ): Promise<BackedPosition | undefined> {
-    if (!this.metadata.vouch) {
-      throw new Error('Vouch metadata not provided. Pass it to the KleoClient constructor.');
-    }
     const client = await this.connect();
     return VouchService.getVouchRelationship(
       this.supabaseClient,
       client,
-      this.metadata.vouch,
+      metadata.vouch,
       poolId,
       voucherAddress,
       borrowerAddress
@@ -231,14 +205,11 @@ export class KleoClient {
     poolId: string,
     borrowerAddress: string
   ): Promise<VouchInfo[]> {
-    if (!this.metadata.vouch) {
-      throw new Error('Vouch metadata not provided. Pass it to the KleoClient constructor.');
-    }
     const client = await this.connect();
     return VouchService.getBorrowerVouches(
       this.supabaseClient,
       client,
-      this.metadata.vouch,
+      metadata.vouch,
       poolId,
       borrowerAddress
     );

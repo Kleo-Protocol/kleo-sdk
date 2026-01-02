@@ -39,11 +39,6 @@ export async function getUserDeposit(
 
   const lendingPoolAddress = contracts.lending_pool;
 
-  // 3. Initialize lending pool contract
-  if (!lendingPoolMetadata) {
-    throw new Error('LendingPool metadata not provided. Pass it to the KleoClient constructor.');
-  }
-
   const lendingPoolContract = new Contract<LendingPoolContractApi>(
     dedotClient as any,
     lendingPoolMetadata,

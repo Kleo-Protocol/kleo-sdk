@@ -36,11 +36,6 @@ export async function getLenderExposure(
 
   const reputationAddress = contracts.reputation;
 
-  // 3. Initialize reputation contract
-  if (!reputationMetadata) {
-    throw new Error('Reputation metadata not provided. Pass it to the KleoClient constructor.');
-  }
-
   const reputationContract = new Contract<ReputationContractApi>(
     dedotClient as any,
     reputationMetadata,
@@ -82,10 +77,6 @@ export async function getBorrowerInfo(
   const contracts = data.contracts;
   if (!contracts || !contracts.reputation || !contracts.vouch || !contracts.config) {
     throw new Error(`Required contract addresses not found in pool contracts`);
-  }
-
-  if (!metadata.reputation || !metadata.vouch || !metadata.config) {
-    throw new Error('Required metadata not provided. Pass all metadata to the KleoClient constructor.');
   }
 
   // Initialize contracts
@@ -162,10 +153,6 @@ export async function getUserLoans(
   const contracts = data.contracts;
   if (!contracts || !contracts.reputation) {
     throw new Error(`Reputation contract address not found in pool contracts`);
-  }
-
-  if (!reputationMetadata) {
-    throw new Error('Reputation metadata not provided. Pass it to the KleoClient constructor.');
   }
 
   const reputationContract = new Contract<ReputationContractApi>(

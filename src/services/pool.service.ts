@@ -72,11 +72,6 @@ export async function getPoolState(
 
   const configAddress = contracts.config;
 
-  // 3. Initialize config contract
-  if (!configMetadata) {
-    throw new Error('Config metadata not provided. Pass it to the KleoClient constructor.');
-  }
-
   const configContract = new Contract<ConfigContractApi>(
     dedotClient as any,
     configMetadata,

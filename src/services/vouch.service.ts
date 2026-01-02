@@ -35,11 +35,6 @@ export async function getVouchRelationship(
 
   const vouchAddress = contracts.vouch;
 
-  // 3. Initialize vouch contract
-  if (!vouchMetadata) {
-    throw new Error('Vouch metadata not provided. Pass it to the KleoClient constructor.');
-  }
-
   const vouchContract = new Contract<VouchContractApi>(
     dedotClient as any,
     vouchMetadata,
@@ -87,10 +82,6 @@ export async function getBorrowerVouches(
   const contracts = data.contracts;
   if (!contracts || !contracts.vouch) {
     throw new Error(`Vouch contract address not found in pool contracts`);
-  }
-
-  if (!vouchMetadata) {
-    throw new Error('Vouch metadata not provided. Pass it to the KleoClient constructor.');
   }
 
   const vouchContract = new Contract<VouchContractApi>(
