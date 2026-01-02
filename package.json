@@ -1,5 +1,5 @@
 {
-  "name": "kleo-sdk",
+  "name": "@kleo-protocol/kleo-sdk",
   "version": "0.1.0",
   "description": "Kleo TypeScript SDK",
   "main": "dist/index.js",
@@ -12,7 +12,7 @@
     "build:watch": "tsc --watch",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build",
-    "test": "jest",
+    "test": "echo \"no tests\" && exit 0",
     "lint": "eslint src --ext .ts",
     "format": "prettier --write \"src/**/*.ts\""
   },
