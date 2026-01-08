@@ -1,6 +1,6 @@
 {
   "source": {
-    "hash": "0x42444e7883f42e7fd926a20169074243c9d7bc99f994ebcb1b7d3300722e58f1",
+    "hash": "0x16a1eec7093f97da297cd549ca3df0401f425f97951cc12cd4a5591725e9354f",
     "language": "ink! 6.0.0-beta.1",
     "compiler": "rustc 1.91.1",
     "build_info": {
@@ -1514,6 +1514,15 @@
             }
           },
           {
+            "label": "loan_amount",
+            "type": {
+              "type": 11,
+              "displayName": [
+                "Balance"
+              ]
+            }
+          },
+          {
             "label": "loan_manager_address",
             "type": {
               "type": 0,
@@ -1532,7 +1541,8 @@
         },
         "docs": [
           " Resolve all vouch relationships for a loan upon loan completion",
-          " Only callable by the authorized loan manager contract"
+          " Only callable by the authorized loan manager contract",
+          " loan_amount: The loan amount (in 10 decimals). Only used when success=false to calculate recovery."
         ],
         "default": false
       },
