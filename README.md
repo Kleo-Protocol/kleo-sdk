@@ -1,6 +1,6 @@
 # Kleo SDK [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Kleo-Protocol/kleo-sdk)
 
-A TypeScript SDK for interacting with the Kleo Protocol on Polkadot Paseo Asset Hub. This SDK provides a unified interface for managing lending pools, reputation systems, and vouch relationships.
+An SDK for interacting with the Kleo Protocol on Polkadot Paseo Asset Hub. This SDK provides a unified interface for managing lending pools, reputation systems, and vouch relationships.
 
 ## Features
 
