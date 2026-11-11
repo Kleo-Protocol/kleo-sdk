@@ -1,6 +1,6 @@
 # Kleo SDK
 
-An SDK for interacting with the Kleo Protocol on Polkadot Paseo Asset Hub. This SDK provides a unified interface for managing lending pools, reputation systems, and vouch relationships.
+An SDK for interacting with the Kleo Protocol on Polkadot. This SDK provides a unified interface for managing lending pools, reputation systems, and vouch relationships.
 
 ## Features
 
